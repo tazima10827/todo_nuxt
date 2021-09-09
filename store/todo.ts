@@ -1,10 +1,15 @@
 import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
 
+export const state = () => ({
+  todo: ""
+})
+
 @Module({
   name: 'todo',
   stateFactory: true,
   namespaced: true
 })
+
 export default class Todos extends VuexModule {
   private todos: string[] = ['task1']
 
@@ -13,8 +18,8 @@ export default class Todos extends VuexModule {
   }
 
   @Mutation
-  public add (todo: string) {
-    this.todos.push(todo)
+  public add (text: string) {
+    this.todos.push(text)
   }
 
   @Mutation

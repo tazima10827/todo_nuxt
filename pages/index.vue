@@ -2,7 +2,7 @@
   <div class="justify-center items-center text-center max-w-md mx-auto p-10">
     <h1>Todoリスト</h1>
     <div class="flex">
-      <input v-model="state.todo"placeholder="taskを入力してください">
+      <input v-model="inputTask" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full leading-normal" placeholder="taskを入力してください">
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20 ml-3" @click="addTodo">
         追加
       </button>
@@ -23,32 +23,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from '@vue/composition-api'
+// import { defineComponent, reactive, computed } from '@vue/composition-api'
 import { TodoStore } from '~/store'
 import { Todo } from '~/types/todo'
+const todos = TodoStore
 
-export default defineComponent({
-  setup () {
-    const state = reactive<Todo>({
-      todo: ''
-    })
-    const todos = TodoStore
-    const todolist = computed(() => todos.getTodos)
-
-    const addTodo = () => {
-      todos.add(state.todo)
-      state.todo = ''
+export default {
+  data () {
+    return {
+      inputTask: ''
     }
-    const removeTodo = (index: number) => {
+  },
+  computed: {
+    todolist () {
+      return  todos.getTodos
+    }
+  },
+  methods: {
+    addTodo (this: {inputTask: string}) {
+      todos.add(this.inputTask)
+      this.inputTask = ''
+      // this.$store.commit('counter/add')
+    },
+    removeTodo(index: number) {
       todos.remove(index)
     }
-
-    return {
-      state,
-      todolist,
-      addTodo,
-      removeTodo
-    }
   }
-})
+}
 </script>
